@@ -1,0 +1,65 @@
+
+syntax= "proto3";
+
+package auth;
+
+option go_package = ".;auth";
+
+import "validate/validate.proto";
+
+service AuthSvc {
+    rpc Login(LoginReq) returns (LoginResp) {}
+    
+    rpc Register(RegisterReq) returns (ReisterResp) {}
+
+    rpc UploadAvatar(UploadAvatarReq) returns (UploadAvatarResp) {}
+
+    rpc FindRoles(FindRolesReq) returns (FindRolesResp) {}
+    
+}
+
+message LoginReq {
+    string username = 1 [(validate.rules).string = {min_len: 5, max_len: 10}];
+    string password = 2 [(validate.rules).string = {min_len: 5, max_len: 10}];
+}
+
+message LoginResp {
+    string token = 1;
+    string signKey = 2;
+}
+
+message RegisterReq {
+    string username = 1 [(validate.rules).string = {min_len: 5, max_len: 10}];
+    string password = 2 [(validate.rules).string = {min_len: 5, max_len: 10}];
+}
+
+message ReisterResp {
+}
+
+message UploadAvatarReq {
+    int64 userID = 1 [(validate.rules).int64.gt = 0];
+    bytes file = 2;
+}
+
+message UploadAvatarResp {
+    string avatarURL = 1;
+}
+
+message RoleDTO {
+    int64 id = 1;
+    string code = 2;
+    string name = 3;
+    string description = 4;
+}
+
+message FindRolesReq {
+    int32 pageNo =1 [(validate.rules).int32.gt = 0];
+    int32 pageSize = 2 [(validate.rules).int32.gt = 0];
+    string name = 3;
+    string code = 4;
+}
+
+message FindRolesResp {
+    int64 total = 1;
+    repeated RoleDTO roles = 2;
+}

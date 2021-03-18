@@ -1,0 +1,87 @@
+---
+app:
+  name: nfgo-ddd-showcase
+  profile: local
+
+
+log:
+  format: text
+  level: info
+  callerPrint: true
+
+
+rpc:
+  port: 9090
+
+
+web:
+  port: 8080
+  swagger:
+    enabled: true
+    url: http://localhost:8080/apidoc/doc.json
+
+metrics:
+  port: 8079
+
+cron:
+  cronJobs:
+  - name: demoJob
+    schedule: "* * * * *"
+
+
+db:
+  host: 127.0.0.1
+  port: 3306
+  database: test
+  username: root
+  password: ""
+  maxIdle: 0
+  maxOpen: 2
+  skipDefaultTransaction: true
+  prepareStmt: true
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  database: 1
+  password: ""
+  maxIdle: 1
+  maxActive: 5
+  testOnBorrow: true
+  idleTimeout: 5m
+  maxConnLifetime : 30m
+  # sentinel:
+  #   master: themaster
+  #   addrs:
+  #   - 192.168.1.3:26379
+  #   - 192.168.1.4:26379
+  #   - 192.168.1.5:26379
+  # cluster:
+  #   addrs: 
+  #     - redis-server-0.redis-service.kube-system.svc.cluster.local:6379
+  #     - redis-server-1.redis-service.kube-system.svc.cluster.local:6379
+  #     - redis-server-2.redis-service.kube-system.svc.cluster.local:6379
+
+
+security:
+  timeWindow: 30m
+  signKeyLifeTime: 30m
+  refreshSignKeyLife: true
+  anons:
+    - /apidoc/*
+    - /api/v1/auth/login
+    - /api/v1/auth/register
+  model: |-
+    [request_definition]
+    r = sub, obj, act
+    [policy_definition]
+    p = sub, obj, act
+    [policy_effect]
+    e = some(where (p.eft == allow))
+    [matchers]
+    m = (r.sub == p.sub || p.sub =="anonymous") && keyMatch(r.obj, p.obj) && (r.act == p.act || p.act == "*")
+    [role_definition]
+    g = _, _
+  policies:
+    # - p, anonymous, /apidoc/*, *
+
