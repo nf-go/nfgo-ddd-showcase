@@ -4,7 +4,7 @@ import (
 	"time"
 
 	gojwt "github.com/pascaldekloe/jwt"
-	"nfgo.ga/nfgo/nutil/jwt"
+	"nfgo.ga/nfgo/x/nsecurity/jwt"
 )
 
 const (

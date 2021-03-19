@@ -3,7 +3,7 @@ syntax= "proto3";
 
 package auth;
 
-option go_package = ".;auth";
+option go_package = "./;auth";
 
 import "validate/validate.proto";
 

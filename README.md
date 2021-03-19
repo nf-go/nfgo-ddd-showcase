@@ -23,6 +23,31 @@
 
 `这里的DDD分层架构示例选型松散分层架构，允许用户接口层直接与领域层交互`，另外还有严格分层架构，领域服务只能被应用服务调用，而应用服务只能被用户接口层调用，服务是逐层对外封装或组合的，依赖关系清晰。
 
+环境准备:
+
+* go 1.16
+* 安装下面的工具:
+
+[protoc](https://github.com/protocolbuffers/protobuf/releases/download/v3.15.6/protoc-3.15.6-linux-x86_64.zip)
+
+```
+
+go get -v google.golang.org/protobuf/cmd/protoc-gen-go
+go get -u -v google.golang.org/grpc/cmd/protoc-gen-go-grpc@ad51f572fd270f2323e3aa2c1d2775cab9087af2
+go get -u -v github.com/envoyproxy/protoc-gen-validate
+
+go get -u -v github.com/google/wire/cmd/wire@v0.5.0
+
+go get -u -v github.com/swaggo/swag/cmd/swag
+```
+
+代码生成:
+
+```
+go generate ./internal/...
+go generate ./...
+```
+
 ### 参考链接
 
 * [DDD实战课-基于DDD的微服务拆分与设计](https://time.geekbang.org/column/intro/100037301)

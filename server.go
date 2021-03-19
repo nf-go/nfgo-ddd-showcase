@@ -1,5 +1,3 @@
-//go:generate wire .
-
 package main
 
 import (
@@ -29,32 +27,26 @@ func NewConfig() (*infra.Config, func()) {
 }
 
 func NewMetricsServer(config *infra.Config, dbOper ndb.DBOper) nmetrics.Server {
-	metricsOpt := &nmetrics.ServerOption{
-		DB: dbOper.DB(context.Background()),
-	}
-	return nmetrics.MustNewServer(config.Config, metricsOpt)
+	return nmetrics.MustNewServer(config.Config, nmetrics.DBOption(dbOper.DB(context.Background())))
 }
 
-func NewRPCServer(config *infra.Config, metricsServer nmetrics.Server,
-	authSvc *svcauth.AuthSvc) rpc.Server {
-	rpcServerOpt := &rpc.ServerOption{MetricsServer: metricsServer}
-	server := rpc.MustNewServer(config.Config, rpcServerOpt)
+func NewRPCServer(config *infra.Config, metricsServer nmetrics.Server, authSvc *svcauth.AuthSvc) rpc.Server {
+	server := rpc.MustNewServer(config.Config, rpc.MetricsServerOption(metricsServer))
 
+	// regester svc services
 	svcauth.RegisterAuthSvcServer(server.GRPCServer(), authSvc)
+	// ...
 
 	return server
 }
 
-func NewWebServer(config *infra.Config, metricsServer nmetrics.Server,
-	authApi *apiauth.AuthAPI) web.Server {
-	webServerOpts := &web.ServerOption{
-		MetricsServer: metricsServer,
-		Middlewares:   []web.HandlerFunc{
-			// authApi.AuthcAndAuthz,
-		},
-	}
-	webServer := web.MustNewServer(config.Config, webServerOpts)
+func NewWebServer(config *infra.Config, metricsServer nmetrics.Server, authApi *apiauth.AuthAPI) web.Server {
 
+	webServer := web.MustNewServer(config.Config, web.MetricsServerOption(metricsServer), web.MiddlewaresOption(
+	// authApi.AuthcAndAuthz,
+	))
+
+	// register routers
 	rg := webServer.Group("/api/v1")
 	{
 		rg = rg.Group("/auth")
@@ -66,14 +58,13 @@ func NewWebServer(config *infra.Config, metricsServer nmetrics.Server,
 
 		}
 	}
+	// ...
 
 	return webServer
 }
 
 func NewJobServer(config *infra.Config, jobs njob.JobFuncs) njob.Server {
-	jobServer := njob.MustNewServer(config.Config, &njob.ServerOption{
-		JobFuncs: jobs,
-	})
+	jobServer := njob.MustNewServer(config.Config, njob.JobFuncsOption(jobs))
 	return jobServer
 }
 
