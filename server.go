@@ -63,8 +63,8 @@ func NewWebServer(config *infra.Config, metricsServer nmetrics.Server, authApi *
 	return webServer
 }
 
-func NewJobServer(config *infra.Config, jobs njob.JobFuncs) njob.Server {
-	jobServer := njob.MustNewServer(config.Config, njob.JobFuncsOption(jobs))
+func NewJobServer(config *infra.Config, jobs njob.Jobs) njob.Server {
+	jobServer := njob.MustNewServer(config.Config, njob.JobsOption(jobs))
 	return jobServer
 }
 

@@ -16,7 +16,7 @@ func NewDemoJob(authService service.AuthService) *DemoJob {
 	return &DemoJob{authService: authService}
 }
 
-func (j *DemoJob) doDemo() {
-	rs, err := j.authService.FindRoles(context.Background(), &entity.FindRoleCond{})
-	nlog.Info(rs, err)
+func (j *DemoJob) Run(ctx context.Context) {
+	rs, err := j.authService.FindRoles(ctx, &entity.FindRoleCond{})
+	nlog.Logger(ctx).Info(rs, err)
 }

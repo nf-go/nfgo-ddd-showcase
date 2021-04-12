@@ -41,8 +41,8 @@ func NewShowcaseServer() (nfgo.Server, func()) {
 	authSvc := auth2.NewAuthSvc(authService)
 	rpcServer := NewRPCServer(config, server, authSvc)
 	demoJob := job.NewDemoJob(authService)
-	jobFuncs := job.NewJobs(demoJob)
-	njobServer := NewJobServer(config, jobFuncs)
+	jobs := job.NewJobs(demoJob)
+	njobServer := NewJobServer(config, jobs)
 	nfgoServer := NewServer(config, server, webServer, rpcServer, njobServer)
 	return nfgoServer, func() {
 		cleanup2()
