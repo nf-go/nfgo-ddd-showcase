@@ -1,0 +1,43 @@
+name: Go
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: setup go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+    - name: setup protoc
+      uses: arduino/setup-protoc@v1
+      with:
+        version: '3.x'
+    - name: generate
+      run: |
+        go get google.golang.org/protobuf/cmd/protoc-gen-go
+        go get google.golang.org/grpc/cmd/protoc-gen-go-grpc@ad51f572fd270f2323e3aa2c1d2775cab9087af2
+        go get -u -v github.com/envoyproxy/protoc-gen-validate
+        go get github.com/google/wire/cmd/wire@v0.5.0
+        go get github.com/swaggo/swag/cmd/swag
+        go mod download
+        go generate ./internal/...
+        go generate ./...
+      env:
+        GOPATH: /home/runner/go
+        PATH: '$PATH:$GOPATH/bin'
+    - name: build
+      run: go build -v ./...
+    - name: test
+      run: go test -v ./...
+    - name: lint
+      run: |
+        go get golang.org/x/lint/golint
+        golint ./...

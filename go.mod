@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.26.1
-	github.com/envoyproxy/protoc-gen-validate v0.4.1
+	github.com/envoyproxy/protoc-gen-validate v0.5.1
 	github.com/go-resty/resty/v2 v2.5.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/wire v0.5.0

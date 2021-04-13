@@ -1,6 +1,8 @@
 ## nfgo-ddd-showcase
 
 ![license](https://img.shields.io/badge/license-Apache--2.0-green.svg)
+[![Language](https://img.shields.io/badge/Language-Go-blue.svg)](https://golang.org/)
+[![Build Status](https://github.com/nf-go/nfgo-ddd-showcase/workflows/Go/badge.svg)](https://github.com/nf-go/nfgo-ddd-showcase/actions)
 
 
 基于DDD分层架构模型的go语言的微服务代码分层模型探索和示例

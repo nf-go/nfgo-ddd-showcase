@@ -1,4 +1,4 @@
-//go:generate protoc -I . -I ${GOPATH}/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.4.1 --go_out=. --go-grpc_out=. --validate_out=lang=go:. auth.proto
+//go:generate protoc -I . -I ${GOPATH}/pkg/mod/github.com/envoyproxy/protoc-gen-validate@v0.5.1 --go_out=. --go-grpc_out=. --validate_out=lang=go:. auth.proto
 package auth
 
 import (
