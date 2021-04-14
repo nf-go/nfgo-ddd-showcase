@@ -686,8 +686,9 @@ honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWh
 honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.1-2019.2.3 h1:3JgtbtFHMiCmsznwGVTUWbgGov+pVqnlf1dEJTNAXeM=
 honnef.co/go/tools v0.0.1-2019.2.3/go.mod h1:a3bituU0lyd329TUQxRnasdCoJDkEUEAqEt0JzvZhAg=
-nfgo.ga/nfgo v0.2.2 h1:t/MCKX56LwT+ob98UKjGxawVX3ZWjiPzF1F55jooBYw=
 nfgo.ga/nfgo v0.2.2/go.mod h1:lXGqYlPF/EaaMZU2EqKpo4pZT9NKsYU+LEbOqcdV5Uc=
+nfgo.ga/nfgo v0.2.3 h1:LEyVRkijwlVVNozRJ94XCfpBUyobrCxq+SrJGJzavVg=
+nfgo.ga/nfgo v0.2.3/go.mod h1:lXGqYlPF/EaaMZU2EqKpo4pZT9NKsYU+LEbOqcdV5Uc=
 nfgo.ga/nfgo/x/nsecurity v0.2.2 h1:k1j+X4TPPBFKwcYzjUsWADcpT/MWb+/7IyMbdKftfmA=
 nfgo.ga/nfgo/x/nsecurity v0.2.2/go.mod h1:f74LZaTrT0vA/VxDC1MZyh9STFYdT4Efnl+L2Yx66Bg=
 sigs.k8s.io/yaml v1.1.0/go.mod h1:UJmg0vDUVViEyp3mgSv9WPwZCDxu4rQW1olrI1uml+o=

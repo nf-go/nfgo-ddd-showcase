@@ -14,6 +14,6 @@ require (
 	google.golang.org/grpc v1.37.0
 	google.golang.org/protobuf v1.25.0
 	gorm.io/gorm v1.21.7
-	nfgo.ga/nfgo v0.2.2
+	nfgo.ga/nfgo v0.2.3
 	nfgo.ga/nfgo/x/nsecurity v0.2.2
 )
