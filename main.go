@@ -4,9 +4,12 @@ package main
 
 import (
 	"flag"
+	"nfgo-ddd-showcase/internal/infra"
 	_ "nfgo-ddd-showcase/internal/interfaces/api/docs"
 
 	_ "github.com/go-resty/resty/v2"
+	"nfgo.ga/nfgo/nconf"
+	"nfgo.ga/nfgo/nlog"
 )
 
 var (
@@ -39,4 +42,14 @@ func main() {
 		return nil
 	})
 	server.MustServe()
+}
+
+func newConfig() (*infra.Config, func()) {
+	config := &infra.Config{}
+	nconf.MustLoadConfigCustom(configFile, config)
+	nlog.InitLogger(config.Config)
+	cleanup := func() {
+		nlog.Sync()
+	}
+	return config, cleanup
 }

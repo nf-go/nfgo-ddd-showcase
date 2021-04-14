@@ -9,8 +9,11 @@ import (
 	"nfgo-ddd-showcase/internal/domain/auth/repo"
 	"nfgo-ddd-showcase/internal/domain/auth/service"
 	"nfgo-ddd-showcase/internal/infra"
+	"nfgo-ddd-showcase/internal/interfaces"
+	"nfgo-ddd-showcase/internal/interfaces/api"
 	"nfgo-ddd-showcase/internal/interfaces/api/v1/auth"
 	"nfgo-ddd-showcase/internal/interfaces/job"
+	"nfgo-ddd-showcase/internal/interfaces/svc"
 	auth2 "nfgo-ddd-showcase/internal/interfaces/svc/auth"
 	"nfgo.ga/nfgo"
 )
@@ -23,9 +26,9 @@ import (
 // Injectors from wire.go:
 
 func NewShowcaseServer() (nfgo.Server, func()) {
-	config, cleanup := NewConfig()
+	config, cleanup := newConfig()
 	dbOper := infra.NewDBOper(config)
-	server := NewMetricsServer(config, dbOper)
+	server := interfaces.NewMetricsServer(config, dbOper)
 	transactional := infra.NewTransactional(dbOper)
 	authUserRepo := repo.NewAuthUserRepo(dbOper)
 	authRoleRepo := repo.NewAuthRoleRepo(dbOper)
@@ -37,13 +40,12 @@ func NewShowcaseServer() (nfgo.Server, func()) {
 	iEnforcer := infra.NewEnforcer(config, dbOper)
 	authService := service.NewAuthService(transactional, authUserRepo, authRoleRepo, cacheRepo, replayChecker, signKeyStore, iEnforcer, config)
 	authAPI := auth.NewAuthAPI(authService, iEnforcer)
-	webServer := NewWebServer(config, server, authAPI)
+	webServer := api.NewWebServer(config, server, authAPI)
 	authSvc := auth2.NewAuthSvc(authService)
-	rpcServer := NewRPCServer(config, server, authSvc)
+	rpcServer := svc.NewRPCServer(config, server, authSvc)
 	demoJob := job.NewDemoJob(authService)
-	jobs := job.NewJobs(demoJob)
-	njobServer := NewJobServer(config, jobs)
-	nfgoServer := NewServer(config, server, webServer, rpcServer, njobServer)
+	njobServer := job.NewJobServer(config, demoJob)
+	nfgoServer := interfaces.NewServer(config, server, webServer, rpcServer, njobServer)
 	return nfgoServer, func() {
 		cleanup2()
 		cleanup()

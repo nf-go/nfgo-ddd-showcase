@@ -18,11 +18,6 @@ func NewShowcaseServer() (nfgo.Server, func()) {
 		infra.ProviderSet,
 		domain.ProviderSet,
 		interfaces.ProviderSet,
-		NewConfig,
-		NewMetricsServer,
-		NewRPCServer,
-		NewWebServer,
-		NewJobServer,
-		NewServer,
+		newConfig,
 	))
 }
