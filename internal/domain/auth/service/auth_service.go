@@ -115,30 +115,33 @@ func (s *authServiceImpl) Register(ctx context.Context, user *entity.AuthUser) e
 
 func (s *authServiceImpl) Authenticate(ctx context.Context, ticket *nsecurity.AuthTicket) error {
 	// Check Time Window
-	if err := ticket.VerifyTimeWindow(s.config.Security.TimeWindow); err != nil {
-		return err
-	}
-
-	// Check Token
-	if err := ticket.VerifyToken(util.JwtSecret); err != nil {
-		return err
+	if s.config.VerifyTimeWindow {
+		if err := ticket.VerifyTimeWindow(s.config.Security.TimeWindow); err != nil {
+			return err
+		}
 	}
 
 	// Check Replay
-	if err := s.replayChecker.VerifyReplay(ticket.RequestID); err != nil {
-		return err
+	if s.config.VerifyReplay {
+		if err := s.replayChecker.VerifyReplay(ticket.RequestID); err != nil {
+			return err
+		}
 	}
 
 	// Check Signatrue
-	singnKey, err := s.signKeyStore.Get(ticket.ClientType, ticket.Subject)
-	if err != nil {
-		return err
-	}
-	if ticket.VerifySignature(singnKey) {
-		return nil
+	if s.config.VerifySignature {
+		singnKey, err := s.signKeyStore.Get(ticket.ClientType, ticket.Subject)
+		if err != nil {
+			return err
+		}
+		if !ticket.VerifySignature(singnKey) {
+			return nerrors.ErrUnauthorized
+		}
 	}
 
-	return nerrors.ErrUnauthorized
+	// Check Token
+	return ticket.VerifyToken(util.JwtSecret)
+
 }
 
 func (s *authServiceImpl) Authorize(ctx context.Context, sub string, obj string, act string) error {

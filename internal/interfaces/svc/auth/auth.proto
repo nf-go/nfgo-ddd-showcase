@@ -26,6 +26,7 @@ message LoginReq {
 message LoginResp {
     string token = 1;
     string signKey = 2;
+    string sub = 3;
 }
 
 message RegisterReq {

@@ -8,7 +8,10 @@ import (
 // Config -
 type Config struct {
 	*nconf.Config
-	Security *nsecurity.SecurityConfig `yaml:"security"`
+	Security         *nsecurity.SecurityConfig `yaml:"security"`
+	VerifyReplay     bool                      `yaml:"verifyReplay"`
+	VerifySignature  bool                      `yaml:"verifySignature"`
+	VerifyTimeWindow bool                      `yaml:"verifyTimeWindow"`
 }
 
 // SetConfig -

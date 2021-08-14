@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"nfgo-ddd-showcase/internal/domain/auth/entity"
 	"nfgo-ddd-showcase/internal/domain/auth/service"
 	"strconv"
@@ -29,7 +30,8 @@ func NewAuthAPI(authService service.AuthService, enforcer casbin.IEnforcer) *Aut
 // @Param file formData file true "avatar image"
 // @Success 200 {object} util.APIResult{data=UploadAvatarResp}
 // @Router /v1/auth/users/{id}/avatar [post]
-// @Security ApiKeyAuth
+// @Security Token
+// @Security Sub
 func (a *AuthAPI) UploadAvatar(c *web.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -79,9 +81,11 @@ func (a *AuthAPI) Login(c *web.Context) {
 		return
 	}
 
-	resp := &LoginResp{}
-	resp.Token = user.Token
-	resp.SignKey = user.SignKey
+	resp := &LoginResp{
+		Token:   user.Token,
+		SignKey: user.SignKey,
+		Sub:     fmt.Sprint(user.ID),
+	}
 	c.Success(resp)
 }
 
@@ -123,7 +127,8 @@ func (a *AuthAPI) Register(c *web.Context) {
 // @Param pageNo query int true "code"
 // @Param pageSize query int true "code"
 // @Success 200 {object} util.APIResult{data=RolesResp}
-// @Security ApiKeyAuth
+// @Security Token
+// @Security Sub
 // @Router /v1/auth/roles [get]
 func (a *AuthAPI) Roles(c *web.Context) {
 	req := &RolesReq{}

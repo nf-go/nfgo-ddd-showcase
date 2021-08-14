@@ -14,7 +14,7 @@ var ProviderSet = wire.NewSet(NewWebServer, auth.NewAuthAPI)
 func NewWebServer(config *infra.Config, metricsServer nmetrics.Server, authApi *auth.AuthAPI) web.Server {
 
 	webServer := web.MustNewServer(config.Config, web.MetricsServerOption(metricsServer), web.MiddlewaresOption(
-	// authApi.AuthcAndAuthz,
+		authApi.AuthcAndAuthz,
 	))
 
 	// register routers

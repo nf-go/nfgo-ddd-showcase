@@ -31,9 +31,29 @@ func init() {
 
 // @BasePath /api
 
-// @securityDefinitions.apikey ApiKeyAuth
+// @securityDefinitions.apikey Token
+// @in header
+// @name X-Token
+
+// @securityDefinitions.apikey Sub
 // @in header
 // @name X-Sub
+
+// @securityDefinitions.apikey ClientType
+// @in header
+// @name X-ClientType
+
+// @securityDefinitions.apikey TraceID
+// @in header
+// @name X-Trace-ID
+
+// @securityDefinitions.apikey TS
+// @in header
+// @name X-Ts
+
+// @securityDefinitions.apikey Sig
+// @in header
+// @name X-Sig
 func main() {
 	flag.Parse()
 	server, cleanup := NewShowcaseServer()

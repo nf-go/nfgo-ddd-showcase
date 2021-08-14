@@ -19,6 +19,7 @@ type LoginReq struct {
 // LoginResp -
 type LoginResp struct {
 	Token   string `json:"token,omitempty"`
+	Sub     string `josn:"sub,omitempty"`
 	SignKey string `json:"signKey,omitempty"`
 }
 

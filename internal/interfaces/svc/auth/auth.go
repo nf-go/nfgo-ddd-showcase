@@ -3,6 +3,7 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"nfgo-ddd-showcase/internal/domain/auth/entity"
 	"nfgo-ddd-showcase/internal/domain/auth/service"
 	"nfgo-ddd-showcase/internal/infra/util"
@@ -29,6 +30,7 @@ func (s *AuthSvc) Login(ctx context.Context, req *LoginReq) (*LoginResp, error) 
 	resp := &LoginResp{
 		Token:   user.Token,
 		SignKey: user.SignKey,
+		Sub:     fmt.Sprint(user.ID),
 	}
 	return resp, nil
 }

@@ -37,7 +37,7 @@ func (a *AuthAPI) AuthcAndAuthz(c *web.Context) {
 	}
 
 	// 授权
-	if err = a.authService.Authorize(c, ticket.Subject, c.Request.RequestURI, c.Request.Method); err != nil {
+	if err = a.authService.Authorize(c, ticket.Subject, c.Request.URL.Path, c.Request.Method); err != nil {
 		c.Fail(err)
 		c.Abort()
 		return
