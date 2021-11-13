@@ -1,8 +1,7 @@
-package repo
+package auth
 
 import (
 	"context"
-	"nfgo-ddd-showcase/internal/domain/auth/entity"
 	"nfgo-ddd-showcase/internal/infra"
 
 	"nfgo.ga/nfgo/ndb"
@@ -10,9 +9,9 @@ import (
 
 // AuthRoleRepo -
 type AuthRoleRepo interface {
-	FindAllRoles(ctx context.Context, withResources bool) ([]*entity.AuthRole, error)
-	FindRolesByUser(ctx context.Context, user *entity.AuthUser) ([]*entity.AuthRole, error)
-	FindRoles(ctx context.Context, cond *entity.FindRoleCond) ([]*entity.AuthRole, error)
+	FindAllRoles(ctx context.Context, withResources bool) ([]*AuthRole, error)
+	FindRolesByUser(ctx context.Context, user *AuthUser) ([]*AuthRole, error)
+	FindRoles(ctx context.Context, cond *FindRoleCond) ([]*AuthRole, error)
 }
 
 func NewAuthRoleRepo(dbOper ndb.DBOper) AuthRoleRepo {
@@ -25,8 +24,8 @@ type authRoleRepo struct {
 	ndb.DBOper
 }
 
-func (r *authRoleRepo) FindAllRoles(ctx context.Context, withResources bool) ([]*entity.AuthRole, error) {
-	roles := []*entity.AuthRole{}
+func (r *authRoleRepo) FindAllRoles(ctx context.Context, withResources bool) ([]*AuthRole, error) {
+	roles := []*AuthRole{}
 	db := r.DB(ctx)
 	if withResources {
 		db = db.Preload("Resources")
@@ -37,21 +36,21 @@ func (r *authRoleRepo) FindAllRoles(ctx context.Context, withResources bool) ([]
 	return roles, nil
 }
 
-func (r *authRoleRepo) FindRolesByUser(ctx context.Context, user *entity.AuthUser) ([]*entity.AuthRole, error) {
-	roles := []*entity.AuthRole{}
+func (r *authRoleRepo) FindRolesByUser(ctx context.Context, user *AuthUser) ([]*AuthRole, error) {
+	roles := []*AuthRole{}
 	if err := r.DB(ctx).Model(user).Association("Roles").Find(&roles); err != nil {
 		return nil, err
 	}
 	return roles, nil
 }
 
-func (r *authRoleRepo) FindRoles(ctx context.Context, cond *entity.FindRoleCond) ([]*entity.AuthRole, error) {
-	roles := []*entity.AuthRole{}
+func (r *authRoleRepo) FindRoles(ctx context.Context, cond *FindRoleCond) ([]*AuthRole, error) {
+	roles := []*AuthRole{}
 	if cond == nil {
 		return nil, infra.ErrLackFindCond
 	}
 
-	db := r.DB(ctx).Model(&entity.AuthRole{})
+	db := r.DB(ctx).Model(&AuthRole{})
 	if cond.Code != "" {
 		db = db.Where("code like ?", "%"+cond.Code+"%")
 	}

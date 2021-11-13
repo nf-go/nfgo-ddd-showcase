@@ -1,10 +1,8 @@
-package service
+package auth
 
 import (
 	"context"
 	"fmt"
-	"nfgo-ddd-showcase/internal/domain/auth/entity"
-	"nfgo-ddd-showcase/internal/domain/auth/repo"
 	"nfgo-ddd-showcase/internal/infra"
 	"nfgo-ddd-showcase/internal/infra/util"
 	"strconv"
@@ -18,9 +16,9 @@ import (
 
 // AuthService -
 type AuthService interface {
-	Login(ctx context.Context, username string, password string) (*entity.AuthUser, error)
+	Login(ctx context.Context, username string, password string) (*AuthUser, error)
 
-	Register(ctx context.Context, user *entity.AuthUser) error
+	Register(ctx context.Context, user *AuthUser) error
 
 	Authenticate(ctx context.Context, ticket *nsecurity.AuthTicket) error
 
@@ -28,14 +26,14 @@ type AuthService interface {
 
 	LoadAuthzPolicies(ctx context.Context) error
 
-	FindRoles(ctx context.Context, cond *entity.FindRoleCond) ([]*entity.AuthRole, error)
+	FindRoles(ctx context.Context, cond *FindRoleCond) ([]*AuthRole, error)
 
 	UploadAvatar(ctx context.Context, userID int64, avatar []byte) (string, error)
 }
 
 func NewAuthService(
 	transactional ndb.Transactional,
-	userRepo repo.AuthUserRepo, roleRepo repo.AuthRoleRepo, cacheRepo repo.CacheRepo,
+	userRepo AuthUserRepo, roleRepo AuthRoleRepo, cacheRepo CacheRepo,
 	replayChecker nsecurity.ReplayChecker, signKeyStore nsecurity.SignKeyStore, enforcer casbin.IEnforcer,
 	config *infra.Config) AuthService {
 	return &authServiceImpl{
@@ -52,16 +50,16 @@ func NewAuthService(
 
 type authServiceImpl struct {
 	transactional ndb.Transactional
-	authUserRepo  repo.AuthUserRepo
-	authRoleRepo  repo.AuthRoleRepo
-	cacheRepo     repo.CacheRepo
+	authUserRepo  AuthUserRepo
+	authRoleRepo  AuthRoleRepo
+	cacheRepo     CacheRepo
 	replayChecker nsecurity.ReplayChecker
 	signKeyStore  nsecurity.SignKeyStore
 	enforcer      casbin.IEnforcer
 	config        *infra.Config
 }
 
-func (s *authServiceImpl) Login(ctx context.Context, username string, password string) (*entity.AuthUser, error) {
+func (s *authServiceImpl) Login(ctx context.Context, username string, password string) (*AuthUser, error) {
 
 	user, err := s.authUserRepo.GetUserByUsername(ctx, username)
 	if err != nil {
@@ -96,7 +94,7 @@ func (s *authServiceImpl) Login(ctx context.Context, username string, password s
 	return user, nil
 }
 
-func (s *authServiceImpl) Register(ctx context.Context, user *entity.AuthUser) error {
+func (s *authServiceImpl) Register(ctx context.Context, user *AuthUser) error {
 	checkUser, err := s.authUserRepo.GetUserByUsername(ctx, user.Username)
 	if err != nil {
 		return err
@@ -208,6 +206,6 @@ func (s *authServiceImpl) UploadAvatar(ctx context.Context, userID int64, avatar
 	return avatarURL, err
 }
 
-func (s *authServiceImpl) FindRoles(ctx context.Context, cond *entity.FindRoleCond) ([]*entity.AuthRole, error) {
+func (s *authServiceImpl) FindRoles(ctx context.Context, cond *FindRoleCond) ([]*AuthRole, error) {
 	return s.authRoleRepo.FindRoles(ctx, cond)
 }

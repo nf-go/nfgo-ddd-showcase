@@ -1,9 +1,8 @@
-package repo
+package auth
 
 import (
 	"context"
 	"errors"
-	"nfgo-ddd-showcase/internal/domain/auth/entity"
 
 	"gorm.io/gorm"
 	"nfgo.ga/nfgo/ndb"
@@ -11,13 +10,13 @@ import (
 
 // AuthUserRepo -
 type AuthUserRepo interface {
-	GetUserByUsername(ctx context.Context, username string) (*entity.AuthUser, error)
+	GetUserByUsername(ctx context.Context, username string) (*AuthUser, error)
 
-	GetUserByUserID(ctx context.Context, userID int64) (*entity.AuthUser, error)
+	GetUserByUserID(ctx context.Context, userID int64) (*AuthUser, error)
 
-	UpdateUser(ctx context.Context, user *entity.AuthUser) error
+	UpdateUser(ctx context.Context, user *AuthUser) error
 
-	InsertUser(ctx context.Context, user *entity.AuthUser) error
+	InsertUser(ctx context.Context, user *AuthUser) error
 
 	UpdateAvatarImage(ctx context.Context, userID int64, avatarImageURL string) error
 }
@@ -32,8 +31,8 @@ type authUserRepo struct {
 	ndb.DBOper
 }
 
-func (r *authUserRepo) GetUserByUserID(ctx context.Context, userID int64) (*entity.AuthUser, error) {
-	user := &entity.AuthUser{}
+func (r *authUserRepo) GetUserByUserID(ctx context.Context, userID int64) (*AuthUser, error) {
+	user := &AuthUser{}
 	err := r.DB(ctx).Where("id = ?", userID).First(user).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
@@ -44,8 +43,8 @@ func (r *authUserRepo) GetUserByUserID(ctx context.Context, userID int64) (*enti
 	return user, nil
 }
 
-func (r *authUserRepo) GetUserByUsername(ctx context.Context, username string) (*entity.AuthUser, error) {
-	user := &entity.AuthUser{}
+func (r *authUserRepo) GetUserByUsername(ctx context.Context, username string) (*AuthUser, error) {
+	user := &AuthUser{}
 	err := r.DB(ctx).Where("username = ?", username).First(user).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
@@ -56,14 +55,14 @@ func (r *authUserRepo) GetUserByUsername(ctx context.Context, username string) (
 	return user, nil
 }
 
-func (r *authUserRepo) UpdateUser(ctx context.Context, user *entity.AuthUser) error {
+func (r *authUserRepo) UpdateUser(ctx context.Context, user *AuthUser) error {
 	return r.DB(ctx).Save(user).Error
 }
 
-func (r *authUserRepo) InsertUser(ctx context.Context, user *entity.AuthUser) error {
+func (r *authUserRepo) InsertUser(ctx context.Context, user *AuthUser) error {
 	return r.DB(ctx).Create(user).Error
 }
 
 func (r *authUserRepo) UpdateAvatarImage(ctx context.Context, userID int64, avatarImageURL string) error {
-	return r.DB(ctx).Model(&entity.AuthUser{}).Where("id = ?", userID).Update("avatar_image", avatarImageURL).Error
+	return r.DB(ctx).Model(&AuthUser{}).Where("id = ?", userID).Update("avatar_image", avatarImageURL).Error
 }

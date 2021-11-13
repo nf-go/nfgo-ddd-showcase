@@ -2,8 +2,7 @@ package auth
 
 import (
 	"fmt"
-	"nfgo-ddd-showcase/internal/domain/auth/entity"
-	"nfgo-ddd-showcase/internal/domain/auth/service"
+	"nfgo-ddd-showcase/internal/domain/auth"
 	"strconv"
 
 	"github.com/casbin/casbin/v2"
@@ -12,11 +11,11 @@ import (
 )
 
 type AuthAPI struct {
-	authService service.AuthService
+	authService auth.AuthService
 	enforcer    casbin.IEnforcer
 }
 
-func NewAuthAPI(authService service.AuthService, enforcer casbin.IEnforcer) *AuthAPI {
+func NewAuthAPI(authService auth.AuthService, enforcer casbin.IEnforcer) *AuthAPI {
 	return &AuthAPI{authService: authService, enforcer: enforcer}
 }
 
@@ -104,7 +103,7 @@ func (a *AuthAPI) Register(c *web.Context) {
 		return
 	}
 
-	user := &entity.AuthUser{
+	user := &auth.AuthUser{
 		Username: req.Username,
 		Password: req.Password,
 	}
@@ -136,7 +135,7 @@ func (a *AuthAPI) Roles(c *web.Context) {
 		return
 	}
 
-	cond := &entity.FindRoleCond{
+	cond := &auth.FindRoleCond{
 		Page: req.Page,
 		Code: req.Code,
 		Name: req.Name,

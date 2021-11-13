@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"nfgo-ddd-showcase/internal/domain/auth/entity"
+	"nfgo-ddd-showcase/internal/domain/auth"
 	"nfgo-ddd-showcase/internal/infra/util"
 )
 
@@ -41,7 +41,7 @@ type RoleDTO struct {
 	Description string
 }
 
-func newRoleDTO(role *entity.AuthRole) *RoleDTO {
+func newRoleDTO(role *auth.AuthRole) *RoleDTO {
 	return &RoleDTO{
 		ID:          role.ID,
 		Name:        role.Name,
@@ -50,7 +50,7 @@ func newRoleDTO(role *entity.AuthRole) *RoleDTO {
 	}
 }
 
-func newRoleDTOs(roles []*entity.AuthRole) []*RoleDTO {
+func newRoleDTOs(roles []*auth.AuthRole) []*RoleDTO {
 	dtos := make([]*RoleDTO, 0, len(roles))
 	for _, role := range roles {
 		dtos = append(dtos, newRoleDTO(role))

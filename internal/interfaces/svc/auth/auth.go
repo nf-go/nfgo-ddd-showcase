@@ -4,17 +4,16 @@ package auth
 import (
 	"context"
 	"fmt"
-	"nfgo-ddd-showcase/internal/domain/auth/entity"
-	"nfgo-ddd-showcase/internal/domain/auth/service"
+	"nfgo-ddd-showcase/internal/domain/auth"
 	"nfgo-ddd-showcase/internal/infra/util"
 )
 
 type AuthSvc struct {
-	authService service.AuthService
+	authService auth.AuthService
 	UnimplementedAuthSvcServer
 }
 
-func NewAuthSvc(authService service.AuthService) *AuthSvc {
+func NewAuthSvc(authService auth.AuthService) *AuthSvc {
 	return &AuthSvc{
 		authService: authService,
 	}
@@ -36,7 +35,7 @@ func (s *AuthSvc) Login(ctx context.Context, req *LoginReq) (*LoginResp, error) 
 }
 
 func (s *AuthSvc) Register(ctx context.Context, req *RegisterReq) (*ReisterResp, error) {
-	user := &entity.AuthUser{
+	user := &auth.AuthUser{
 		Username: req.Username,
 		Password: req.Password,
 	}
@@ -58,7 +57,7 @@ func (s *AuthSvc) UploadAvatar(ctx context.Context, req *UploadAvatarReq) (*Uplo
 }
 
 func (s *AuthSvc) FindRoles(ctx context.Context, req *FindRolesReq) (*FindRolesResp, error) {
-	cond := &entity.FindRoleCond{
+	cond := &auth.FindRoleCond{
 		Page: util.NewPage(req.PageNo, req.PageSize),
 		Code: req.Code,
 		Name: req.Name,

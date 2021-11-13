@@ -2,22 +2,21 @@ package job
 
 import (
 	"context"
-	"nfgo-ddd-showcase/internal/domain/auth/entity"
-	"nfgo-ddd-showcase/internal/domain/auth/service"
+	"nfgo-ddd-showcase/internal/domain/auth"
 
 	"nfgo.ga/nfgo/nlog"
 )
 
 type DemoJob struct {
-	authService service.AuthService
+	authService auth.AuthService
 }
 
-func NewDemoJob(authService service.AuthService) *DemoJob {
+func NewDemoJob(authService auth.AuthService) *DemoJob {
 	return &DemoJob{authService: authService}
 }
 
 func (j *DemoJob) Run(ctx context.Context) error {
-	rs, err := j.authService.FindRoles(ctx, &entity.FindRoleCond{})
+	rs, err := j.authService.FindRoles(ctx, &auth.FindRoleCond{})
 	nlog.Logger(ctx).Info(rs)
 	return err
 }
