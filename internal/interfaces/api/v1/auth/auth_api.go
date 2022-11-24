@@ -19,6 +19,17 @@ func NewAuthAPI(authService auth.AuthService, enforcer casbin.IEnforcer) *AuthAP
 	return &AuthAPI{authService: authService, enforcer: enforcer}
 }
 
+func (a *AuthAPI) RegisterRoutes(rootRg web.RouterGroup) {
+	rg := rootRg.Group("/auth")
+	{
+		rg.POST("/login", a.Login)
+		rg.POST("/register", a.Register)
+		rg.POST("/users/:id/avatar", a.UploadAvatar)
+		rg.GET("/roles", a.Roles)
+
+	}
+}
+
 // UploadAvatar -
 // @Summary 上传头像
 // @Description 上传头像

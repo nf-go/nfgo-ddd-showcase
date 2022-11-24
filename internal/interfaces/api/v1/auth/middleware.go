@@ -1,15 +1,30 @@
 package auth
 
 import (
+	"nfgo-ddd-showcase/internal/domain/auth"
+
+	"github.com/casbin/casbin/v2"
 	"nfgo.ga/nfgo/nutil/nconst"
 	"nfgo.ga/nfgo/web"
 	"nfgo.ga/nfgo/x/nsecurity"
 )
 
-// AuthcAndAuthz -
-func (a *AuthAPI) AuthcAndAuthz(c *web.Context) {
+type MiddleWare struct {
+	authService auth.AuthService
+	enforcer    casbin.IEnforcer
+}
 
-	annonAllowed, err := a.enforcer.Enforce("anonymous", c.Request.RequestURI, c.Request.Method)
+func NewMiddleWare(authService auth.AuthService, enforcer casbin.IEnforcer) *MiddleWare {
+	return &MiddleWare{
+		authService: authService,
+		enforcer:    enforcer,
+	}
+}
+
+// AuthcAndAuthz -
+func (m *MiddleWare) AuthcAndAuthz(c *web.Context) {
+
+	annonAllowed, err := m.enforcer.Enforce("anonymous", c.Request.RequestURI, c.Request.Method)
 	if err != nil {
 		c.Fail(err)
 		c.Abort()
@@ -30,14 +45,14 @@ func (a *AuthAPI) AuthcAndAuthz(c *web.Context) {
 		Signature:  c.GetHeader(nconst.HeaderSig),
 	}
 	// 认证
-	if err := a.authService.Authenticate(c, ticket); err != nil {
+	if err := m.authService.Authenticate(c, ticket); err != nil {
 		c.Fail(err)
 		c.Abort()
 		return
 	}
 
 	// 授权
-	if err = a.authService.Authorize(c, ticket.Subject, c.Request.URL.Path, c.Request.Method); err != nil {
+	if err = m.authService.Authorize(c, ticket.Subject, c.Request.URL.Path, c.Request.Method); err != nil {
 		c.Fail(err)
 		c.Abort()
 		return
