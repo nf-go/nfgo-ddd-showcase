@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"nfgo-ddd-showcase/internal/infra"
-	"nfgo-ddd-showcase/internal/infra/util"
 	"strconv"
 
 	"github.com/casbin/casbin/v2"
@@ -34,7 +33,7 @@ type AuthService interface {
 func NewAuthService(
 	transactional ndb.Transactional,
 	userRepo AuthUserRepo, roleRepo AuthRoleRepo, cacheRepo CacheRepo,
-	replayChecker nsecurity.ReplayChecker, signKeyStore nsecurity.SignKeyStore, enforcer casbin.IEnforcer,
+	replayChecker nsecurity.ReplayChecker, signKeyStore nsecurity.SignKeyStore, enforcer casbin.IEnforcer, jwtOper nsecurity.JWTOper,
 	config *infra.Config) AuthService {
 	return &authServiceImpl{
 		transactional: transactional,
@@ -44,6 +43,7 @@ func NewAuthService(
 		replayChecker: replayChecker,
 		signKeyStore:  signKeyStore,
 		enforcer:      enforcer,
+		jwtOper:       jwtOper,
 		config:        config,
 	}
 }
@@ -56,6 +56,7 @@ type authServiceImpl struct {
 	replayChecker nsecurity.ReplayChecker
 	signKeyStore  nsecurity.SignKeyStore
 	enforcer      casbin.IEnforcer
+	jwtOper       nsecurity.JWTOper
 	config        *infra.Config
 }
 
@@ -69,7 +70,7 @@ func (s *authServiceImpl) Login(ctx context.Context, username string, password s
 		return nil, infra.ErrUsernameOrPwd
 	}
 
-	if err = user.Login(username, password); err != nil {
+	if err = user.Login(username, password, s.jwtOper); err != nil {
 		return nil, err
 	}
 
@@ -138,7 +139,7 @@ func (s *authServiceImpl) Authenticate(ctx context.Context, ticket *nsecurity.Au
 	}
 
 	// Check Token
-	return ticket.VerifyToken(util.JwtSecret)
+	return ticket.VerifyToken(s.jwtOper.ValidateToken)
 
 }
 

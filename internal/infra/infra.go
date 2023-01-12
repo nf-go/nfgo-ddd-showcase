@@ -10,7 +10,9 @@ import (
 	"nfgo.ga/nfgo/x/nsecurity"
 )
 
-var ProviderSet = wire.NewSet(NewDBOper, NewTransactional, NewRedisPool, NewRedisOper, NewReplayChecker, NewSignKeyStore, NewEnforcer)
+var ProviderSet = wire.NewSet(NewDBOper, NewTransactional,
+	NewRedisPool, NewRedisOper,
+	NewReplayChecker, NewSignKeyStore, NewEnforcer, NewJWTOper)
 
 func NewDBOper(config *Config) ndb.DBOper {
 	return ndb.NewDBOper(ndb.MustNewDB(config.DB))
@@ -44,4 +46,8 @@ func NewSignKeyStore(config *Config, redisOper ndb.RedisOper) nsecurity.SignKeyS
 
 func NewEnforcer(config *Config, dbOper ndb.DBOper) casbin.IEnforcer {
 	return nsecurity.MustNewEnforcer(config.Security, dbOper.DB(context.Background()))
+}
+
+func NewJWTOper(config *Config) nsecurity.JWTOper {
+	return nsecurity.MustNewJWTOper(config.Security)
 }

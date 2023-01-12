@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"nfgo.ga/nfgo/nutil/ncrypto"
+	"nfgo.ga/nfgo/x/nsecurity"
 )
 
 const (
@@ -37,7 +38,7 @@ type AuthUser struct {
 }
 
 // Login - 用户登录
-func (u *AuthUser) Login(username string, plainPwd string) error {
+func (u *AuthUser) Login(username string, plainPwd string, jwtOper nsecurity.JWTOper) error {
 	// 判断用户名是否正确
 	if u.Username != username {
 		return infra.ErrUsernameOrPwd
@@ -48,13 +49,13 @@ func (u *AuthUser) Login(username string, plainPwd string) error {
 	if u.Password != hashedPwd {
 		return infra.ErrUsernameOrPwd
 	}
-	return u.refreshTokenAndSingKey()
+	return u.refreshTokenAndSingKey(jwtOper)
 }
 
 // refreshTokenAndSingKey -
-func (u *AuthUser) refreshTokenAndSingKey() error {
+func (u *AuthUser) refreshTokenAndSingKey(jwtOper nsecurity.JWTOper) error {
 	// 生成token
-	token, err := util.NewToken(fmt.Sprint(u.ID), time.Now().Add(time.Hour*24*365), map[string]interface{}{})
+	token, err := jwtOper.IssueToken(fmt.Sprint(u.ID), time.Now().Add(time.Hour*24*365), map[string]interface{}{})
 	if err != nil {
 		return fmt.Errorf("fail to generate token for user %s, %w: ", u.Username, err)
 	}

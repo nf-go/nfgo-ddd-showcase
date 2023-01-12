@@ -3,37 +3,33 @@ app:
   name: nfgo-ddd-showcase
   profile: local
 
-
 log:
   format: text
   level: info
   callerPrint: true
 
-
 rpc:
   port: 9090
-
 
 web:
   port: 8080
   swagger:
     enabled: true
-    url: http://localhost:8080/apidoc/doc.json
+    url: http://192.168.96.150:8080/apidoc/doc.json
 
 metrics:
   port: 8079
 
 cron:
   cronJobs:
-  - name: demoJob
-    schedule: "* * * * *"
-
+    - name: demoJob
+      schedule: "* * * * *"
 
 db:
   host: 127.0.0.1
   port: 3306
   database: test
-  username: root
+  username: test
   password: ""
   maxIdle: 0
   maxOpen: 2
@@ -49,7 +45,7 @@ redis:
   maxActive: 5
   testOnBorrow: true
   idleTimeout: 5m
-  maxConnLifetime : 30m
+  maxConnLifetime: 30m
   # sentinel:
   #   master: themaster
   #   addrs:
@@ -57,16 +53,24 @@ redis:
   #   - 192.168.1.4:26379
   #   - 192.168.1.5:26379
   # cluster:
-  #   addrs: 
+  #   addrs:
   #     - redis-server-0.redis-service.kube-system.svc.cluster.local:6379
   #     - redis-server-1.redis-service.kube-system.svc.cluster.local:6379
   #     - redis-server-2.redis-service.kube-system.svc.cluster.local:6379
-
 
 security:
   timeWindow: 30m
   signKeyLifeTime: 30m
   refreshSignKeyLife: true
+  jwt:
+    jwtPublicKey: |-
+      -----BEGIN PUBLIC KEY-----
+      MCowBQYDK2VwAyEAJLaXDs6JySsqlLu6iEvdXU9TBXdKbl21naMSMTTxHTs=
+      -----END PUBLIC KEY-----
+    jwtPrivateKey: |-
+      -----BEGIN PRIVATE KEY-----
+      MC4CAQAwBQYDK2VwBCIEIOrrk4Ec73oaJ6c/N+A5QIf9WaIgIOEO9dxaEBbQUts6
+      -----END PRIVATE KEY-----
   anons:
     - /apidoc/*
     - /api/v1/auth/login
@@ -84,4 +88,3 @@ security:
     g = _, _
   policies:
     # - p, anonymous, /apidoc/*, *
-
