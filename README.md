@@ -27,7 +27,7 @@
 
 环境准备:
 
-* go 1.18
+* go 1.19
 * 安装下面的工具:
 
 [protoc](https://github.com/protocolbuffers/protobuf/releases/download/v3.15.6/protoc-3.15.6-linux-x86_64.zip)
