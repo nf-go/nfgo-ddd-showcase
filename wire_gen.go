@@ -42,8 +42,10 @@ func NewShowcaseServer() (nfgo.Server, func()) {
 	authService := auth.NewAuthService(transactional, authUserRepo, authRoleRepo, cacheRepo, replayChecker, signKeyStore, iEnforcer, jwtOper, config)
 	middleWare := auth2.NewMiddleWare(authService, iEnforcer)
 	authAPI := auth2.NewAuthAPI(authService, iEnforcer)
-	v := api.NewRouterRegistrars(authAPI)
-	webServer := api.NewWebServer(config, server, middleWare, v)
+	apIs := &api.APIs{
+		AuthAPI: authAPI,
+	}
+	webServer := api.NewWebServer(config, server, middleWare, apIs)
 	authSvc := auth3.NewAuthSvc(authService)
 	rpcServer := svc.NewRPCServer(config, server, authSvc)
 	demoJob := job.NewDemoJob(authService)

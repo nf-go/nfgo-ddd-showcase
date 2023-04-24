@@ -11,31 +11,24 @@ import (
 
 var ProviderSet = wire.NewSet(
 	NewWebServer,
-	NewRouterRegistrars,
+	wire.Struct(new(APIs), "*"),
 	auth.NewMiddleWare,
 	auth.NewAuthAPI,
 )
 
-type RouterRegistrar interface {
-	RegisterRoutes(rg web.RouterGroup)
+type APIs struct {
+	*auth.AuthAPI
 }
 
-func NewWebServer(config *infra.Config, metricsServer nmetrics.Server, middleWare *auth.MiddleWare, routerRegistrars []RouterRegistrar) web.Server {
+func NewWebServer(config *infra.Config, metricsServer nmetrics.Server, middleWare *auth.MiddleWare, apis *APIs) web.Server {
 	webServer := web.MustNewServer(config.Config, web.MetricsServerOption(metricsServer), web.MiddlewaresOption(
 		middleWare.AuthcAndAuthz,
 	))
 	// register routes
 	rootRg := webServer.Group("/api/v1")
+	routerRegistrars := web.ReflectToRouterRegistrars(apis)
 	for _, registrar := range routerRegistrars {
 		registrar.RegisterRoutes(rootRg)
 	}
 	return webServer
-}
-
-func NewRouterRegistrars(
-	authApi *auth.AuthAPI,
-) []RouterRegistrar {
-	return []RouterRegistrar{
-		authApi,
-	}
 }
