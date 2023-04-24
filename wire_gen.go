@@ -47,7 +47,10 @@ func NewShowcaseServer() (nfgo.Server, func()) {
 	}
 	webServer := api.NewWebServer(config, server, middleWare, apIs)
 	authSvc := auth3.NewAuthSvc(authService)
-	rpcServer := svc.NewRPCServer(config, server, authSvc)
+	svcs := &svc.Svcs{
+		AuthSvc: authSvc,
+	}
+	rpcServer := svc.NewRPCServer(config, server, svcs)
 	demoJob := job.NewDemoJob(authService)
 	njobServer := job.NewJobServer(config, demoJob)
 	nfgoServer := interfaces.NewServer(config, server, webServer, rpcServer, njobServer)

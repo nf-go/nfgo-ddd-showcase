@@ -11,13 +11,21 @@ import (
 	"github.com/google/wire"
 )
 
-var ProviderSet = wire.NewSet(NewRPCServer, auth.NewAuthSvc)
+var ProviderSet = wire.NewSet(
+	NewRPCServer,
+	wire.Struct(new(Svcs), "*"),
+	auth.NewAuthSvc,
+)
 
-func NewRPCServer(config *infra.Config, metricsServer nmetrics.Server, authSvc *auth.AuthSvc) rpc.Server {
+type Svcs struct {
+	*auth.AuthSvc
+}
+
+func NewRPCServer(config *infra.Config, metricsServer nmetrics.Server, svcs *Svcs) rpc.Server {
 	server := rpc.MustNewServer(config.Config, rpc.MetricsServerOption(metricsServer))
 
 	// regester svc services
-	auth.RegisterAuthSvcServer(server.GRPCServer(), authSvc)
+	auth.RegisterAuthSvcServer(server.GRPCServer(), svcs.AuthSvc)
 	// ...
 
 	return server
