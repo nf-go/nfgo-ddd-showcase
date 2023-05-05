@@ -27,6 +27,7 @@ jobs:
           go install github.com/envoyproxy/protoc-gen-validate@v0.6.1
           go install github.com/google/wire/cmd/wire@v0.5.0
           go install github.com/swaggo/swag/cmd/swag@v1.8.4
+          go install golang.org/x/tools/cmd/stringer@v0.8.0
           go mod download
           go generate ./internal/...
           go generate ./...

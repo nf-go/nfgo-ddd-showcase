@@ -10,17 +10,37 @@ import (
 	"nfgo.ga/nfgo/x/nsecurity"
 )
 
-const (
-	// UserStatusEnabled -
-	UserStatusEnabled UserStatus = 1
-	// UserStatusDiabled -
-	UserStatusDiabled UserStatus = -1
-	// UserStatusLocked -
-	UserStatusLocked UserStatus = -2
-)
+// AuthResource -
+type AuthResource struct {
+	util.Model
+	Name         string `gorm:"type:varchar(50);"`
+	Type         ResourceType
+	URL          string `gorm:"type:varchar(100);"`
+	Method       string `gorm:"type:varchar(50);"`
+	Icon         string `gorm:"type:varchar(50);"`
+	TreeLevel    int
+	IsLeaf       bool
+	DisplayOrder int
+	Description  string `gorm:"type:varchar(500);"`
+	ParentID     int
+	Children     []*AuthResource `gorm:"foreignKey:ParentID"`
+}
 
-// UserStatus -
-type UserStatus int8
+// AuthRole -
+type AuthRole struct {
+	util.Model
+	Code        string          `gorm:"type:varchar(50);unique_index"`
+	Name        string          `gorm:"type:varchar(50);"`
+	Description string          `gorm:"type:varchar(500);"`
+	Resources   []*AuthResource `gorm:"many2many:auth_role_resource"`
+}
+
+// FindRoleCond -
+type FindRoleCond struct {
+	util.Page
+	Code string
+	Name string
+}
 
 // AuthUser -
 type AuthUser struct {
