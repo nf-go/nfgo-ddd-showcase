@@ -7,6 +7,7 @@
 package main
 
 import (
+	"github.com/nf-go/nfgo"
 	"nfgo-ddd-showcase/internal/domain/auth"
 	"nfgo-ddd-showcase/internal/infra"
 	"nfgo-ddd-showcase/internal/interfaces"
@@ -15,7 +16,6 @@ import (
 	"nfgo-ddd-showcase/internal/interfaces/job"
 	"nfgo-ddd-showcase/internal/interfaces/svc"
 	auth3 "nfgo-ddd-showcase/internal/interfaces/svc/auth"
-	"nfgo.ga/nfgo"
 )
 
 import (

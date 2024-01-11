@@ -5,8 +5,8 @@ import (
 	"nfgo-ddd-showcase/internal/interfaces/svc/auth"
 
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
-	"nfgo.ga/nfgo/nmetrics"
-	"nfgo.ga/nfgo/rpc"
+	"github.com/nf-go/nfgo/nmetrics"
+	"github.com/nf-go/nfgo/rpc"
 
 	"github.com/google/wire"
 )

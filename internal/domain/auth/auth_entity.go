@@ -6,8 +6,8 @@ import (
 	"nfgo-ddd-showcase/internal/infra/util"
 	"time"
 
-	"nfgo.ga/nfgo/nutil/ncrypto"
-	"nfgo.ga/nfgo/x/nsecurity"
+	"github.com/nf-go/nfgo/nutil/ncrypto"
+	"github.com/nf-go/nsecurity"
 )
 
 // AuthResource -

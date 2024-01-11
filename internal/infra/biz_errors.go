@@ -1,7 +1,7 @@
 package infra
 
 import (
-	"nfgo.ga/nfgo/nerrors"
+	"github.com/nf-go/nfgo/nerrors"
 )
 
 var (

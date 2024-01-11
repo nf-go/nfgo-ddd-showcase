@@ -1,6 +1,6 @@
 package util
 
-import "nfgo.ga/nfgo/nutil/ntypes"
+import "github.com/nf-go/nfgo/nutil/ntypes"
 
 const (
 	// RedisKeyUserRoles - auth:userRoles:{userID}

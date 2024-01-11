@@ -4,7 +4,7 @@ import (
 	"context"
 	"nfgo-ddd-showcase/internal/domain/auth"
 
-	"nfgo.ga/nfgo/nlog"
+	"github.com/nf-go/nfgo/nlog"
 )
 
 type DemoJob struct {

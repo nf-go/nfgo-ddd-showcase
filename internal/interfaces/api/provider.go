@@ -5,8 +5,8 @@ import (
 	"nfgo-ddd-showcase/internal/interfaces/api/v1/auth"
 
 	"github.com/google/wire"
-	"nfgo.ga/nfgo/nmetrics"
-	"nfgo.ga/nfgo/web"
+	"github.com/nf-go/nfgo/nmetrics"
+	"github.com/nf-go/nfgo/web"
 )
 
 var ProviderSet = wire.NewSet(

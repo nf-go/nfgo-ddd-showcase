@@ -7,8 +7,8 @@ import (
 	"nfgo-ddd-showcase/internal/infra/util"
 	"strings"
 
+	"github.com/nf-go/nfgo/ndb"
 	"gorm.io/gorm"
-	"nfgo.ga/nfgo/ndb"
 )
 
 // AuthUserRepo -

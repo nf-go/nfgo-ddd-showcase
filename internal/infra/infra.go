@@ -5,9 +5,9 @@ import (
 
 	"github.com/casbin/casbin/v2"
 	"github.com/google/wire"
-	"nfgo.ga/nfgo/ndb"
-	"nfgo.ga/nfgo/nlog"
-	"nfgo.ga/nfgo/x/nsecurity"
+	"github.com/nf-go/nfgo/ndb"
+	"github.com/nf-go/nfgo/nlog"
+	"github.com/nf-go/nsecurity"
 )
 
 var ProviderSet = wire.NewSet(NewDBOper, NewTransactional,

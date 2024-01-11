@@ -4,7 +4,7 @@ import (
 	"nfgo-ddd-showcase/internal/infra"
 
 	"github.com/google/wire"
-	"nfgo.ga/nfgo/njob"
+	"github.com/nf-go/nfgo/njob"
 )
 
 var ProviderSet = wire.NewSet(NewJobServer, NewDemoJob)

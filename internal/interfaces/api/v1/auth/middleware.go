@@ -4,9 +4,9 @@ import (
 	"nfgo-ddd-showcase/internal/domain/auth"
 
 	"github.com/casbin/casbin/v2"
-	"nfgo.ga/nfgo/nutil/nconst"
-	"nfgo.ga/nfgo/web"
-	"nfgo.ga/nfgo/x/nsecurity"
+	"github.com/nf-go/nfgo/nutil/nconst"
+	"github.com/nf-go/nfgo/web"
+	"github.com/nf-go/nsecurity"
 )
 
 type MiddleWare struct {

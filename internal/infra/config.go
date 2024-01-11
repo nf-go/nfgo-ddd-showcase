@@ -1,8 +1,8 @@
 package infra
 
 import (
-	"nfgo.ga/nfgo/nconf"
-	"nfgo.ga/nfgo/x/nsecurity"
+	"github.com/nf-go/nfgo/nconf"
+	"github.com/nf-go/nsecurity"
 )
 
 // Config -

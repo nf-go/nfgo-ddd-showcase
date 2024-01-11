@@ -1,3 +1,4 @@
+//go:build wireinject
 // +build wireinject
 
 // The build tag makes sure the stub is not built in the final build.
@@ -10,7 +11,7 @@ import (
 	"nfgo-ddd-showcase/internal/interfaces"
 
 	"github.com/google/wire"
-	"nfgo.ga/nfgo"
+	"github.com/nf-go/nfgo"
 )
 
 func NewShowcaseServer() (nfgo.Server, func()) {

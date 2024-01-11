@@ -8,8 +8,8 @@ import (
 	_ "nfgo-ddd-showcase/internal/interfaces/api/docs"
 
 	_ "github.com/go-resty/resty/v2"
-	"nfgo.ga/nfgo/nconf"
-	"nfgo.ga/nfgo/nlog"
+	"github.com/nf-go/nfgo/nconf"
+	"github.com/nf-go/nfgo/nlog"
 )
 
 var (

@@ -7,14 +7,14 @@ import (
 	"nfgo-ddd-showcase/internal/interfaces/job"
 	"nfgo-ddd-showcase/internal/interfaces/svc"
 
-	"nfgo.ga/nfgo/rpc"
+	"github.com/nf-go/nfgo/rpc"
 
 	"github.com/google/wire"
-	"nfgo.ga/nfgo"
-	"nfgo.ga/nfgo/ndb"
-	"nfgo.ga/nfgo/njob"
-	"nfgo.ga/nfgo/nmetrics"
-	"nfgo.ga/nfgo/web"
+	"github.com/nf-go/nfgo"
+	"github.com/nf-go/nfgo/ndb"
+	"github.com/nf-go/nfgo/njob"
+	"github.com/nf-go/nfgo/nmetrics"
+	"github.com/nf-go/nfgo/web"
 )
 
 var ProviderSet = wire.NewSet(svc.ProviderSet, api.ProviderSet, job.ProviderSet, NewMetricsServer, NewServer)

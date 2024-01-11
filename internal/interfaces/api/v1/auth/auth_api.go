@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/casbin/casbin/v2"
-	"nfgo.ga/nfgo/nlog"
-	"nfgo.ga/nfgo/web"
+	"github.com/nf-go/nfgo/nlog"
+	"github.com/nf-go/nfgo/web"
 )
 
 type AuthAPI struct {

@@ -7,10 +7,10 @@ import (
 	"strconv"
 
 	"github.com/casbin/casbin/v2"
-	"nfgo.ga/nfgo/ncontext"
-	"nfgo.ga/nfgo/ndb"
-	"nfgo.ga/nfgo/nerrors"
-	"nfgo.ga/nfgo/x/nsecurity"
+	"github.com/nf-go/nfgo/ncontext"
+	"github.com/nf-go/nfgo/ndb"
+	"github.com/nf-go/nfgo/nerrors"
+	"github.com/nf-go/nsecurity"
 )
 
 // AuthService -
