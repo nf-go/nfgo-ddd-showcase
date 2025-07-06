@@ -27,7 +27,7 @@
 
 环境准备:
 
-* go 1.19
+* go 1.23
 * 安装下面的工具:
 
 [protoc](https://github.com/protocolbuffers/protobuf/releases/download/v3.15.6/protoc-3.15.6-linux-x86_64.zip)
@@ -36,9 +36,9 @@
 go install google.golang.org/protobuf/cmd/protoc-gen-go
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@ad51f572fd270f2323e3aa2c1d2775cab9087af2
 go install github.com/envoyproxy/protoc-gen-validate@v0.6.1
-go install github.com/google/wire/cmd/wire@v0.5.0
+go install github.com/google/wire/cmd/wire@v0.6.0
 go install github.com/swaggo/swag/cmd/swag@v1.8.4
-go install golang.org/x/tools/cmd/stringer@v0.8.0
+go install golang.org/x/tools/cmd/stringer@v0.34.0
 ```
 
 代码生成:

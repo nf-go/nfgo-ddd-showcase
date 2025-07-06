@@ -6,13 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// APIResult -
-type APIResult struct {
-	Code int         `json:"code"`
-	Msg  string      `json:"msg,omitempty"`
-	Data interface{} `json:"data,omitempty"`
-}
-
 // Page -
 type Page struct {
 	PageNo   int32 `form:"pageNo" json:"pageNo" binding:"gt=0"`

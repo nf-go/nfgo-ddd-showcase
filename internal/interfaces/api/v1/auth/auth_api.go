@@ -38,7 +38,7 @@ func (a *AuthAPI) RegisterRoutes(rootRg web.RouterGroup) {
 // @Produce  json
 // @Param id path int true "user id"
 // @Param file formData file true "avatar image"
-// @Success 200 {object} util.APIResult{data=UploadAvatarResp}
+// @Success 200 {object} web.APIResult{data=UploadAvatarResp}
 // @Router /v1/auth/users/{id}/avatar [post]
 // @Security Token
 // @Security Sub
@@ -77,7 +77,7 @@ func (a *AuthAPI) UploadAvatar(c *web.Context) {
 // @Produce  json
 // @Param   username formData string true "username"
 // @Param   password formData string true "password"
-// @Success 200 {object} util.APIResult{data=LoginResp}
+// @Success 200 {object} web.APIResult{data=LoginResp}
 // @Router /v1/auth/login [post]
 func (a *AuthAPI) Login(c *web.Context) {
 	req := &LoginReq{}
@@ -106,7 +106,7 @@ func (a *AuthAPI) Login(c *web.Context) {
 // @Accept  json
 // @Produce  json
 // @Param   body body RegisterReq true "body"
-// @Success 200 {object} util.APIResult{data=RegisterResp}
+// @Success 200 {object} web.APIResult{data=RegisterResp}
 // @Router /v1/auth/register [post]
 func (a *AuthAPI) Register(c *web.Context) {
 	req := &RegisterReq{}
@@ -136,7 +136,7 @@ func (a *AuthAPI) Register(c *web.Context) {
 // @Param code query string false "code"
 // @Param pageNo query int true "code"
 // @Param pageSize query int true "code"
-// @Success 200 {object} util.APIResult{data=RolesResp}
+// @Success 200 {object} web.APIResult{data=RolesResp}
 // @Security Token
 // @Security Sub
 // @Router /v1/auth/roles [get]
